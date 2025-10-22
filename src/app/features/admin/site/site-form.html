@@ -1,0 +1,106 @@
+<header class="page-head">
+  <h1 class="page-title">Información del sitio</h1>
+</header>
+
+@if (saved()) {
+  <p class="alert alert--success" role="status">Cambios guardados. Ya se ven en el sitio público.</p>
+}
+@if (error(); as e) {
+  <div class="alert alert--error" role="alert">
+    {{ e.title }}
+    @if (e.details.length) {
+      <ul>
+        @for (d of e.details; track d) {
+          <li>{{ d }}</li>
+        }
+      </ul>
+    }
+  </div>
+}
+
+@if (loading()) {
+  <p role="status">Cargando...</p>
+} @else {
+  <form class="form panel" [formGroup]="form" (ngSubmit)="save()" novalidate>
+    <div class="form-grid">
+      <label class="field">
+        <span>Nombre del negocio *</span>
+        <input formControlName="name" maxlength="80" />
+        @if (showError('name')) {
+          <small class="error">Obligatorio.</small>
+        }
+      </label>
+      <label class="field">
+        <span>Eslogan</span>
+        <input formControlName="tagline" maxlength="160" />
+      </label>
+    </div>
+
+    <div class="form-grid">
+      <label class="field">
+        <span>WhatsApp (para el enlace) *</span>
+        <input formControlName="whatsappNumber" inputmode="numeric" placeholder="51947191624" />
+        <small>Solo números, con código de país (51 para Perú).</small>
+        @if (showError('whatsappNumber')) {
+          <small class="error">Entre 8 y 15 dígitos, sin espacios.</small>
+        }
+      </label>
+      <label class="field">
+        <span>WhatsApp (como se muestra) *</span>
+        <input formControlName="whatsappDisplay" placeholder="947 191 624" />
+        @if (showError('whatsappDisplay')) {
+          <small class="error">Obligatorio.</small>
+        }
+      </label>
+    </div>
+
+    <label class="field">
+      <span>Mensaje predeterminado de WhatsApp</span>
+      <input formControlName="defaultMessage" maxlength="300" />
+    </label>
+
+    <div class="form-grid">
+      <label class="field">
+        <span>Facebook (URL)</span>
+        <input formControlName="facebookUrl" placeholder="https://www.facebook.com/..." />
+        @if (showError('facebookUrl')) {
+          <small class="error">Debe empezar con https://</small>
+        }
+      </label>
+      <label class="field">
+        <span>Instagram (usuario)</span>
+        <input formControlName="instagramHandle" placeholder="@valerystejido" />
+      </label>
+      <label class="field">
+        <span>Instagram (URL)</span>
+        <input formControlName="instagramUrl" placeholder="https://www.instagram.com/..." />
+        @if (showError('instagramUrl')) {
+          <small class="error">Debe empezar con https://</small>
+        }
+      </label>
+    </div>
+
+    <div class="form-grid">
+      <label class="field">
+        <span>Zona</span>
+        <input formControlName="location" placeholder="San Juan de Miraflores, Lima" />
+      </label>
+      <label class="field">
+        <span>Dirección exacta</span>
+        <input formControlName="address" />
+        <small>Se enlaza automáticamente a Google Maps.</small>
+      </label>
+    </div>
+
+    <div class="form-grid">
+      <app-image-field label="Logo *" [value]="form.controls.logoUrl.value" (valueChange)="form.controls.logoUrl.setValue($event)" />
+      <app-image-field label="Imagen principal (portada) *" [value]="form.controls.heroImageUrl.value" (valueChange)="form.controls.heroImageUrl.setValue($event)" />
+    </div>
+
+    <div class="actions">
+      <button class="btn btn--primary" type="submit" [disabled]="saving()">
+        {{ saving() ? 'Guardando...' : 'Guardar cambios' }}
+      </button>
+    </div>
+  </form>
+}

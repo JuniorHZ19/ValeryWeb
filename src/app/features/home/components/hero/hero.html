@@ -1,0 +1,49 @@
+<section id="inicio" class="hero" aria-labelledby="hero-title">
+  <!-- Decorative hearts and clouds -->
+  <span class="deco deco--cloud deco--cloud-1" aria-hidden="true"></span>
+  <span class="deco deco--cloud deco--cloud-2" aria-hidden="true"></span>
+  <app-icon class="deco deco--heart deco--heart-1" name="heart" [size]="44" />
+  <app-icon class="deco deco--heart deco--heart-2" name="heart" [size]="28" />
+  <app-icon class="deco deco--heart deco--heart-3" name="heart" [size]="36" />
+
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <h1 class="hero__title" id="hero-title">
+        <span class="hero__line hero__line--rose">El regalo</span>
+        <span class="hero__line hero__line--white">perfecto</span>
+        <span class="hero__line hero__line--white hero__line--small">¡Personaliza a tu persona</span>
+        <span class="hero__line hero__line--rose">favorita!</span>
+      </h1>
+
+      <div class="hero__actions">
+        <app-whatsapp-button message="¡Hola! Quiero comprar un amigurumi personalizado.">¡Compra ya!</app-whatsapp-button>
+        <a class="hero__secondary" routerLink="/" fragment="modelos">Ver modelos</a>
+      </div>
+
+      <p class="badge" aria-label="Hecho a mano con amor">
+        <span>Hecho</span>
+        <span>a mano</span>
+        <span class="badge__script"><small>con</small> amor</span>
+      </p>
+    </div>
+
+    <img
+      class="hero__photo"
+      [src]="site().heroImageUrl | media"
+      alt="Amigurumis personalizados hechos a mano"
+      width="920"
+      height="597"
+      fetchpriority="high"
+    />
+  </div>
+
+  <div class="strip">
+    <div class="container strip__inner">
+      <a class="strip__phone" [href]="whatsappHref()" target="_blank" rel="noopener">
+        <app-icon name="whatsapp" [size]="34" />
+        {{ site().whatsappDisplay }}
+      </a>
+      <p class="strip__text">{{ site().tagline }}: ¡elige el tamaño que más te guste!</p>
+    </div>
+  </div>
+</section>

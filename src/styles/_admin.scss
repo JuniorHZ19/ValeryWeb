@@ -1,0 +1,254 @@
+// Shared look of the admin panel: forms, tables, buttons and messages.
+// Scoped under .admin (set by AdminLayout and LoginPage) so it never leaks into the public site.
+.admin {
+  --admin-bg: #faf6f3;
+  --admin-danger: #b42318;
+  --admin-success: #1f7a4d;
+
+  color: var(--color-text);
+
+  .page-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 400;
+    color: var(--color-maroon);
+  }
+
+  .panel {
+    padding: var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: 42px;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    font-weight: 800;
+    transition: filter 150ms ease;
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.08);
+    }
+
+    &:disabled {
+      cursor: progress;
+      opacity: 0.6;
+    }
+
+    &--primary {
+      background: var(--color-maroon);
+      color: var(--color-surface);
+    }
+
+    &--ghost {
+      border-color: var(--color-border);
+      background: var(--color-surface);
+    }
+
+    &--danger {
+      border-color: #f1c4c0;
+      background: #fff1f0;
+      color: var(--admin-danger);
+    }
+
+    &--small {
+      min-height: 34px;
+      padding-inline: var(--space-3);
+      font-size: var(--text-sm);
+    }
+  }
+
+  .alert {
+    margin-bottom: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+
+    &--error {
+      background: #fff1f0;
+      color: var(--admin-danger);
+    }
+
+    &--success {
+      background: #ecfdf3;
+      color: var(--admin-success);
+    }
+
+    ul {
+      margin-top: var(--space-1);
+      padding-left: var(--space-4);
+      list-style: disc;
+      font-weight: 400;
+    }
+  }
+
+  // Forms
+  .form {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .field {
+    display: grid;
+    gap: var(--space-1);
+
+    > span {
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+
+    input:not([type="checkbox"]),
+    textarea {
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      font: inherit;
+
+      &:focus {
+        border-color: var(--color-brick);
+        outline: 0;
+        box-shadow: 0 0 0 3px rgb(169 84 76 / 0.15);
+      }
+
+      &.ng-invalid.ng-touched {
+        border-color: var(--admin-danger);
+      }
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    small {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+
+    .error {
+      color: var(--admin-danger);
+    }
+  }
+
+  .check {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: 700;
+
+    input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-maroon);
+    }
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  // Repeating list of "detail" inputs in the product form.
+  .details {
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    &__list {
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    &__row {
+      display: flex;
+      gap: var(--space-2);
+    }
+
+    &__add {
+      justify-self: start;
+    }
+  }
+
+  // Tables
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+
+    th,
+    td {
+      padding: var(--space-3);
+      border-bottom: 1px solid var(--color-border);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: var(--admin-bg);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+  }
+
+  .thumb {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    background: var(--color-cream);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: 800;
+
+    &--on {
+      background: #ecfdf3;
+      color: var(--admin-success);
+    }
+
+    &--off {
+      background: #f2f4f7;
+      color: #475467;
+    }
+  }
+}

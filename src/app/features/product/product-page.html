@@ -1,0 +1,90 @@
+@let s = state();
+<div class="container page">
+  <nav class="crumbs" aria-label="Ruta de navegación">
+    <a routerLink="/">Inicio</a>
+    <span aria-hidden="true">/</span>
+    <a routerLink="/" fragment="modelos">Modelos</a>
+    @if (s.status === 'ready') {
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{{ s.product.name }}</span>
+    }
+  </nav>
+
+  @if (pager(); as nav) {
+    <nav class="pager" aria-label="Navegar entre productos">
+      <a class="pager__link" [routerLink]="['/productos', nav.prev.slug]" rel="prev">
+        <app-icon class="pager__icon pager__icon--prev" name="arrowRight" [size]="18" />
+        <span><small>Anterior</small>{{ nav.prev.name }}</span>
+      </a>
+      <span class="pager__position">Modelo {{ nav.position }} de {{ nav.total }}</span>
+      <a class="pager__link pager__link--next" [routerLink]="['/productos', nav.next.slug]" rel="next">
+        <span><small>Siguiente</small>{{ nav.next.name }}</span>
+        <app-icon class="pager__icon" name="arrowRight" [size]="18" />
+      </a>
+    </nav>
+  }
+
+  @if (s.status === 'loading') {
+    <p class="status" role="status">Cargando...</p>
+  } @else if (s.status === 'not-found') {
+    <div class="status" role="alert">
+      <h1 class="status__title">No encontramos este modelo</h1>
+      <p>Puede que ya no esté disponible.</p>
+      <a class="status__link" routerLink="/" fragment="modelos">Ver todos los modelos</a>
+    </div>
+  } @else if (s.status === 'ready') {
+    @let p = s.product;
+    <article class="product">
+      <figure class="product__figure">
+        <img class="product__img" [src]="p.imageUrl | media" [alt]="p.imageAlt" />
+      </figure>
+
+      <div class="product__info">
+        <p class="product__eyebrow">Amigurumi personalizado</p>
+        <h1 class="product__title">{{ p.name }}</h1>
+
+        <p class="product__price">
+          @if (p.price !== null) {
+            {{ p.price | currency: 'PEN' : 'S/ ' : '1.2-2' }}
+          } @else {
+            Precio a consultar
+          }
+        </p>
+
+        @if (p.description) {
+          <p class="product__description">{{ p.description }}</p>
+        }
+
+        @if (p.details.length) {
+          <h2 class="product__subtitle">Detalles personalizados</h2>
+          <ul class="product__details">
+            @for (detail of p.details; track detail) {
+              <li><app-icon name="check" [size]="18" /> {{ detail }}</li>
+            }
+          </ul>
+        }
+
+        <p class="product__size">
+          <app-icon name="ruler" [size]="18" />
+          {{ p.sizeInfo || 'Elige el tamaño que más te guste: te lo confirmamos por WhatsApp.' }}
+        </p>
+
+        <app-whatsapp-button class="product__cta" variant="whatsapp" [message]="whatsappMessage()">
+          Quiero este modelo
+        </app-whatsapp-button>
+        <p class="product__note">Cada amigurumi se teje a mano según tus fotos y detalles.</p>
+      </div>
+    </article>
+  }
+
+  @if (others().length) {
+    <section class="others" aria-labelledby="others-title">
+      <h2 class="others__title" id="others-title">Otros modelos</h2>
+      <ul class="others__grid">
+        @for (product of others(); track product.id) {
+          <li><app-product-card [product]="product" /></li>
+        }
+      </ul>
+    </section>
+  }
+</div>

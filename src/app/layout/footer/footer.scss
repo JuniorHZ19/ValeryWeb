@@ -1,0 +1,63 @@
+@use "breakpoints" as bp;
+
+:host {
+  display: block;
+}
+
+.footer {
+  background: var(--color-brown);
+  color: rgb(255 255 255 / 0.85);
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: var(--space-8);
+    padding-block: var(--space-12) var(--space-8);
+
+    @include bp.below(bp.$mobile) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__about {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+  }
+
+  &__title {
+    margin-bottom: var(--space-3);
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 400;
+    color: var(--color-surface);
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding-block: var(--space-1);
+
+    &[href]:hover {
+      color: var(--color-surface);
+      text-decoration: underline;
+    }
+
+    // Long address: keep the pin aligned with the first line when it wraps.
+    &--address {
+      align-items: flex-start;
+    }
+  }
+
+  &__contact {
+    display: grid;
+  }
+
+  &__bottom {
+    padding-block: var(--space-4);
+    border-top: 1px solid rgb(255 255 255 / 0.15);
+    font-size: var(--text-sm);
+    text-align: center;
+  }
+}

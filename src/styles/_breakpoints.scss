@@ -1,0 +1,10 @@
+// Breakpoint mixins shared by component stylesheets: @use 'breakpoints' as bp;
+$tablet: 900px;
+$mobile: 760px;
+$small: 520px;
+
+@mixin below($width) {
+  @media (max-width: $width) {
+    @content;
+  }
+}

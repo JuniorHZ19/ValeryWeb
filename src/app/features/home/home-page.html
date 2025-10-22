@@ -1,0 +1,18 @@
+<app-hero />
+
+@let s = state();
+@if (s.status === 'loading') {
+  <p class="container status" role="status">Cargando nuestros amigurumis...</p>
+} @else if (s.status === 'error') {
+  <div class="container status" role="alert">
+    <p>No pudimos cargar el catálogo en este momento.</p>
+    <button type="button" (click)="retry()">Intentar de nuevo</button>
+  </div>
+} @else if (s.status === 'ready') {
+  <app-highlights [items]="s.content.highlights" />
+  <app-gallery [products]="s.products" />
+  <app-order-steps [steps]="s.content.steps" />
+  <app-occasions [occasions]="s.content.occasions" />
+}
+
+<app-contact-cta />

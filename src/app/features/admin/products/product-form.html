@@ -1,0 +1,100 @@
+<header class="page-head">
+  <h1 class="page-title">{{ isEdit() ? 'Editar producto' : 'Nuevo producto' }}</h1>
+  <a class="btn btn--ghost" routerLink="/admin/productos">← Volver a la lista</a>
+</header>
+
+@if (error(); as e) {
+  <div class="alert alert--error" role="alert">
+    {{ e.title }}
+    @if (e.details.length) {
+      <ul>
+        @for (d of e.details; track d) {
+          <li>{{ d }}</li>
+        }
+      </ul>
+    }
+  </div>
+}
+
+@if (loading()) {
+  <p role="status">Cargando producto...</p>
+} @else {
+  <form class="form panel" [formGroup]="form" (ngSubmit)="save()" novalidate>
+    <app-image-field label="Foto del amigurumi *" [value]="form.controls.imageUrl.value" (valueChange)="form.controls.imageUrl.setValue($event)" />
+    @if (showError('imageUrl')) {
+      <small class="field"><span class="error">Sube una imagen.</span></small>
+    }
+
+    <div class="form-grid">
+      <label class="field">
+        <span>Nombre *</span>
+        <input formControlName="name" maxlength="120" />
+        @if (showError('name')) {
+          <small class="error">Escribe un nombre (mínimo 2 caracteres).</small>
+        }
+        @if (isEdit() && slug()) {
+          <small>Dirección actual: /productos/{{ slug() }} (cambia si cambias el nombre)</small>
+        }
+      </label>
+
+      <label class="field">
+        <span>Precio (S/)</span>
+        <input type="number" formControlName="price" min="0" step="0.01" placeholder="Vacío = precio a consultar" />
+        @if (showError('price')) {
+          <small class="error">Debe ser un número entre 0 y 100000.</small>
+        }
+      </label>
+    </div>
+
+    <label class="field">
+      <span>Descripción</span>
+      <textarea formControlName="description" maxlength="2000" placeholder="Cuenta qué hace especial a este amigurumi."></textarea>
+    </label>
+
+    <fieldset class="field details">
+      <span>Detalles personalizados</span>
+      <div formArrayName="details" class="details__list">
+        @for (control of details.controls; track control; let i = $index) {
+          <div class="details__row">
+            <input [formControlName]="i" maxlength="80" [attr.aria-label]="'Detalle ' + (i + 1)" placeholder="Ej. Lentes dorados" />
+            <button type="button" class="btn btn--ghost btn--small" (click)="removeDetail(i)" [attr.aria-label]="'Quitar detalle ' + (i + 1)">✕</button>
+          </div>
+        }
+      </div>
+      <button type="button" class="btn btn--ghost btn--small details__add" (click)="addDetail()" [disabled]="details.length >= 12">
+        + Agregar detalle
+      </button>
+    </fieldset>
+
+    <div class="form-grid">
+      <label class="field">
+        <span>Tamaño</span>
+        <input formControlName="sizeInfo" maxlength="200" placeholder="Ej. 25 cm aprox." />
+        <small>Opcional. Si lo dejas vacío, se invita a consultar por WhatsApp.</small>
+      </label>
+
+      <label class="field">
+        <span>Texto alternativo de la imagen</span>
+        <input formControlName="imageAlt" maxlength="300" placeholder="Describe la foto para lectores de pantalla" />
+      </label>
+
+      <label class="field">
+        <span>Orden en el catálogo</span>
+        <input type="number" formControlName="sortOrder" min="0" max="10000" />
+        <small>Los números menores aparecen primero.</small>
+      </label>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" formControlName="isVisible" />
+      Visible en el sitio público
+    </label>
+
+    <div class="actions">
+      <button class="btn btn--primary" type="submit" [disabled]="saving()">
+        {{ saving() ? 'Guardando...' : isEdit() ? 'Guardar cambios' : 'Crear producto' }}
+      </button>
+      <a class="btn btn--ghost" routerLink="/admin/productos">Cancelar</a>
+    </div>
+  </form>
+}

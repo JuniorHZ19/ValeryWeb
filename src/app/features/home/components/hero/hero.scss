@@ -1,0 +1,231 @@
+@use "breakpoints" as bp;
+
+:host {
+  display: block;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 15%, rgb(255 255 255 / 0.55), transparent 35%),
+    radial-gradient(circle at 80% 85%, rgb(255 255 255 / 0.45), transparent 30%),
+    linear-gradient(180deg, var(--color-cream), var(--color-sand));
+
+  &__inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    align-items: end;
+    gap: var(--space-6);
+    padding-top: var(--space-12);
+
+    @include bp.below(bp.$tablet) {
+      grid-template-columns: minmax(0, 1fr);
+      padding-top: var(--space-8);
+    }
+  }
+
+  &__copy {
+    position: relative;
+    z-index: 1;
+    align-self: center;
+    // Room for the "hecho a mano" badge under the buttons.
+    padding-bottom: 150px;
+
+    @include bp.below(bp.$tablet) {
+      padding-bottom: 0;
+    }
+  }
+
+  &__title {
+    display: grid;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.5rem, 6.5vw, 4.5rem);
+    line-height: 0.95;
+    text-transform: none;
+    transform: rotate(-4deg);
+    transform-origin: left center;
+  }
+
+  &__line {
+    font-style: italic;
+    // Chunky outlined look from the banner: white fill with a maroon shadow, or rose with white outline.
+    &--rose {
+      color: var(--color-rose);
+      text-shadow:
+        3px 3px 0 var(--color-surface),
+        6px 6px 0 rgb(122 31 34 / 0.25);
+    }
+
+    &--white {
+      color: var(--color-surface);
+      text-transform: uppercase;
+      text-shadow:
+        3px 3px 0 var(--color-maroon),
+        6px 6px 0 rgb(122 31 34 / 0.25);
+    }
+
+    &--small {
+      margin-block: 0.15em;
+      font-size: 0.48em;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+  }
+
+  &__secondary {
+    font-weight: 800;
+    color: var(--color-maroon);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  &__photo {
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin-bottom: var(--space-8);
+    // Framed like a printed photo, so the edges of the banner crop read as intentional.
+    border: 8px solid var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft), 0 18px 40px rgb(122 31 34 / 0.18);
+    rotate: 2deg;
+
+    @include bp.below(bp.$tablet) {
+      max-width: 560px;
+      margin-inline: auto;
+    }
+  }
+}
+
+.badge {
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  display: grid;
+  place-content: center;
+  width: 150px;
+  aspect-ratio: 1;
+  border: 6px solid var(--color-surface);
+  border-radius: 50%;
+  background: var(--color-rose-soft);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--color-plum);
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(-8deg);
+  box-shadow: var(--shadow-soft);
+
+  &__script {
+    font-family: var(--font-script);
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--color-rose);
+    text-transform: none;
+
+    small {
+      font-size: 0.6em;
+      color: var(--color-plum);
+    }
+  }
+
+  @include bp.below(bp.$tablet) {
+    position: static;
+    width: 120px;
+    margin-top: var(--space-6);
+    font-size: 1.1rem;
+  }
+}
+
+.strip {
+  position: relative;
+  background: var(--color-brick);
+  color: var(--color-surface);
+
+  &__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2) var(--space-8);
+    padding-block: var(--space-4);
+  }
+
+  &__phone {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+
+  &__text {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+}
+
+.deco {
+  position: absolute;
+  pointer-events: none;
+
+  &--cloud {
+    width: 260px;
+    height: 90px;
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 0.7);
+    filter: blur(2px);
+    box-shadow:
+      60px -30px 0 10px rgb(255 255 255 / 0.7),
+      130px -10px 0 0 rgb(255 255 255 / 0.7);
+  }
+
+  &--cloud-1 {
+    top: -30px;
+    left: 2%;
+  }
+
+  &--cloud-2 {
+    right: 8%;
+    bottom: 70px;
+    opacity: 0.8;
+  }
+
+  &--heart {
+    color: var(--color-rose);
+    fill: var(--color-rose);
+
+    ::ng-deep path {
+      fill: currentColor;
+    }
+  }
+
+  &--heart-1 {
+    top: 12%;
+    left: 46%;
+  }
+
+  &--heart-2 {
+    top: 30%;
+    right: 3%;
+  }
+
+  &--heart-3 {
+    bottom: 34%;
+    left: 40%;
+    opacity: 0.8;
+  }
+}

@@ -1,0 +1,96 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-soft), 0 14px 30px rgb(122 31 34 / 0.15);
+
+    .card__more {
+      gap: var(--space-2);
+    }
+  }
+
+  &__figure {
+    height: 300px;
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--color-cream), var(--color-sand));
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: var(--space-4);
+  }
+
+  &__title {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 400;
+    color: var(--color-maroon);
+  }
+
+  &__details {
+    display: grid;
+    gap: var(--space-1);
+    margin-block: var(--space-2) var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    app-icon {
+      color: var(--color-brick);
+    }
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-top: auto;
+    padding-top: var(--space-3);
+    border-top: 1px dashed var(--color-border);
+    font-size: var(--text-sm);
+  }
+
+  &__price {
+    font-weight: 800;
+    color: var(--color-text);
+  }
+
+  &__more {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-weight: 800;
+    color: var(--color-maroon);
+    transition: gap 150ms ease;
+  }
+}

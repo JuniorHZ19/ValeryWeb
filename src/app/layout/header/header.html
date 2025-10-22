@@ -1,0 +1,32 @@
+<div class="container header">
+  <a routerLink="/" fragment="inicio" class="header__brand" aria-label="Creaciones Valery's, ir al inicio">
+    <app-brand />
+  </a>
+
+  <button
+    type="button"
+    class="header__toggle"
+    aria-controls="main-nav"
+    [attr.aria-expanded]="menuOpen()"
+    [attr.aria-label]="menuOpen() ? 'Cerrar menú' : 'Abrir menú'"
+    (click)="menuOpen.set(!menuOpen())"
+  >
+    <app-icon [name]="menuOpen() ? 'close' : 'menu'" />
+  </button>
+
+  <nav id="main-nav" class="nav" [class.nav--open]="menuOpen()" aria-label="Principal">
+    <ul class="nav__list">
+      @for (link of links; track link.fragment) {
+        <li>
+          <a class="nav__link" routerLink="/" [fragment]="link.fragment" (click)="menuOpen.set(false)">{{ link.label }}</a>
+        </li>
+      }
+      @if (isAdmin()) {
+        <li>
+          <a class="nav__link nav__link--admin" routerLink="/admin" (click)="menuOpen.set(false)">Panel admin</a>
+        </li>
+      }
+    </ul>
+    <app-whatsapp-button class="nav__cta" variant="whatsapp">Pedir ahora</app-whatsapp-button>
+  </nav>
+</div>

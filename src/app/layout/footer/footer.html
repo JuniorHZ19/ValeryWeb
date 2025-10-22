@@ -1,0 +1,52 @@
+@let s = site();
+<footer class="footer">
+  <div class="container footer__grid">
+    <div class="footer__about">
+      <app-brand [inverse]="true" />
+      <p>{{ s.tagline }}, tejidos a mano con amor.</p>
+    </div>
+
+    <nav aria-label="Secciones">
+      <h2 class="footer__title">Secciones</h2>
+      <ul>
+        @for (link of links; track link.fragment) {
+          <li><a class="footer__link" routerLink="/" [fragment]="link.fragment">{{ link.label }}</a></li>
+        }
+      </ul>
+    </nav>
+
+    <section aria-labelledby="footer-contact">
+      <h2 class="footer__title" id="footer-contact">Contacto</h2>
+      <ul class="footer__contact">
+        <li>
+          <a class="footer__link" [href]="whatsappHref()" target="_blank" rel="noopener">
+            <app-icon name="whatsapp" [size]="20" /> {{ s.whatsappDisplay }}
+          </a>
+        </li>
+        @if (s.facebookUrl) {
+          <li>
+            <a class="footer__link" [href]="s.facebookUrl" target="_blank" rel="noopener">
+              <app-icon name="facebook" [size]="20" /> Facebook
+            </a>
+          </li>
+        }
+        @if (s.instagramUrl) {
+          <li>
+            <a class="footer__link" [href]="s.instagramUrl" target="_blank" rel="noopener">
+              <app-icon name="instagram" [size]="20" /> {{ s.instagramHandle }}
+            </a>
+          </li>
+        }
+        @if (s.address) {
+          <li>
+            <a class="footer__link footer__link--address" [href]="mapsUrl()" target="_blank" rel="noopener">
+              <app-icon name="pin" [size]="20" /> {{ s.address }}
+            </a>
+          </li>
+        }
+      </ul>
+    </section>
+  </div>
+
+  <p class="container footer__bottom">© {{ year }} {{ s.name }}. Hecho a mano con amor.</p>
+</footer>

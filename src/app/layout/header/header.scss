@@ -1,0 +1,85 @@
+@use "breakpoints" as bp;
+
+:host {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: block;
+  background: rgb(255 255 255 / 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--header-height);
+
+  &__toggle {
+    display: none;
+    color: var(--color-maroon);
+
+    @include bp.below(bp.$tablet) {
+      display: inline-flex;
+    }
+  }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+
+  &__list {
+    display: flex;
+    gap: var(--space-1);
+  }
+
+  &__link {
+    display: block;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    color: var(--color-text);
+    transition: background 150ms ease, color 150ms ease;
+
+    &:hover {
+      background: var(--color-rose-soft);
+      color: var(--color-maroon);
+    }
+
+    &--admin {
+      background: var(--color-plum);
+      color: var(--color-surface);
+    }
+  }
+
+  // Mobile: a panel that drops under the header when toggled.
+  @include bp.below(bp.$tablet) {
+    position: absolute;
+    top: 100%;
+    inset-inline: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--gutter) var(--space-6);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-soft);
+
+    &--open {
+      display: flex;
+    }
+
+    &__list {
+      flex-direction: column;
+    }
+
+    &__cta {
+      align-self: flex-start;
+    }
+  }
+}
