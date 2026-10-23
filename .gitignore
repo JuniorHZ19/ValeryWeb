@@ -43,3 +43,6 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 .vercel
+
+# Generated from API_URL by scripts/set-env.mjs
+/src/environments/environment.prod.ts
