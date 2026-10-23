@@ -31,6 +31,21 @@ export default [
         title: 'Editar producto | Panel de administración',
       },
       {
+        path: 'categorias',
+        loadComponent: () => import('./categories/category-list'),
+        title: 'Categorías | Panel de administración',
+      },
+      {
+        path: 'categorias/nueva',
+        loadComponent: () => import('./categories/category-form'),
+        title: 'Nueva categoría | Panel de administración',
+      },
+      {
+        path: 'categorias/:id',
+        loadComponent: () => import('./categories/category-form'),
+        title: 'Editar categoría | Panel de administración',
+      },
+      {
         path: 'sitio',
         loadComponent: () => import('./site/site-form'),
         title: 'Información del sitio | Panel de administración',

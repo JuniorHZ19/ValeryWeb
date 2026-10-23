@@ -11,6 +11,10 @@ export const routes: Routes = [
     loadComponent: () => import('@features/product/product-page'),
   },
   {
+    path: 'categorias/:slug',
+    loadComponent: () => import('@features/category/category-page'),
+  },
+  {
     path: 'admin',
     loadChildren: () => import('@features/admin/admin.routes'),
   },

@@ -10,14 +10,15 @@ import { MediaPipe } from '@shared/pipes/media.pipe';
 import { Icon } from '@shared/ui/icon/icon';
 import { ProductCard } from '@shared/ui/product-card/product-card';
 import { WhatsappButton } from '@shared/ui/whatsapp-button/whatsapp-button';
+import { ZoomImage } from '@shared/ui/zoom-image/zoom-image';
 import { catchError, map, of, startWith, switchMap } from 'rxjs';
 
 type ProductState = { status: 'loading' } | { status: 'not-found' } | { status: 'ready'; product: Product };
 
-/** /productos/:slug — full details of one amigurumi, with a WhatsApp CTA that names it. */
+/** /productos/:slug — full details of one product, with a WhatsApp CTA that names it. */
 @Component({
   selector: 'app-product-page',
-  imports: [RouterLink, CurrencyPipe, MediaPipe, Icon, ProductCard, WhatsappButton],
+  imports: [RouterLink, CurrencyPipe, MediaPipe, Icon, ProductCard, WhatsappButton, ZoomImage],
   templateUrl: './product-page.html',
   styleUrl: './product-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -64,7 +65,7 @@ export default class ProductPage {
 
   protected readonly whatsappMessage = computed(() => {
     const s = this.state();
-    return s.status === 'ready' ? `¡Hola! Me interesa el amigurumi "${s.product.name}". ¿Me dan más información?` : '';
+    return s.status === 'ready' ? `¡Hola! Me interesa "${s.product.name}" (${s.product.category.name}). ¿Me dan más información?` : '';
   });
 
   constructor() {

@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, type OnInit, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import type { Category } from '@core/models/category.model';
 import type { Product, ProductInput } from '@core/models/product.model';
+import { CategoryService } from '@core/services/category.service';
 import { ProductService } from '@core/services/product.service';
 import { ImageField } from '../components/image-field/image-field';
 import { AdminFlash } from '../data/admin-flash';
@@ -17,6 +19,7 @@ import { type ApiErrorView, describeApiError } from '../data/api-error';
 export default class ProductForm implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly service = inject(ProductService);
+  private readonly categoryService = inject(CategoryService);
   private readonly router = inject(Router);
   private readonly flash = inject(AdminFlash);
 
@@ -28,9 +31,11 @@ export default class ProductForm implements OnInit {
   protected readonly saving = signal(false);
   protected readonly error = signal<ApiErrorView | null>(null);
   protected readonly slug = signal('');
+  protected readonly categories = signal<Category[]>([]);
 
   protected readonly form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(120)]],
+    categoryId: this.fb.control<number | null>(null, Validators.required),
     description: ['', Validators.maxLength(2000)],
     details: this.fb.array<string>([]),
     imageUrl: ['', Validators.required],
@@ -47,6 +52,15 @@ export default class ProductForm implements OnInit {
   }
 
   ngOnInit(): void {
+    this.categoryService.list().subscribe({
+        next: (list) => {
+          this.categories.set(list);
+          // New products start in the first category; the admin can change it.
+          if (!this.form.controls.categoryId.value && list.length) this.form.controls.categoryId.setValue(list[0].id);
+        },
+        error: (err: unknown) => this.error.set(describeApiError(err, 'No se pudieron cargar las categorías.')),
+      });
+
     const id = Number(this.id());
     if (!this.isEdit()) {
       this.addDetail();
@@ -91,6 +105,7 @@ export default class ProductForm implements OnInit {
       details: value.details.map((d) => d.trim()).filter(Boolean),
       price: value.price === null || (value.price as unknown) === '' ? null : Number(value.price),
       sizeInfo: value.sizeInfo.trim() || null,
+      categoryId: Number(value.categoryId),
     };
 
     this.saving.set(true);
@@ -126,6 +141,7 @@ export default class ProductForm implements OnInit {
       sizeInfo: product.sizeInfo ?? '',
       isVisible: product.isVisible,
       sortOrder: product.sortOrder,
+      categoryId: product.categoryId,
     });
   }
 }

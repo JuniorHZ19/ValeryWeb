@@ -50,6 +50,9 @@
 
     @include bp.below(bp.$tablet) {
       display: none;
+      // The open menu never grows past the screen: it scrolls inside.
+      max-height: calc(100dvh - 72px);
+      overflow-y: auto;
       margin-top: var(--space-4);
     }
   }
@@ -75,13 +78,15 @@
     border-radius: var(--radius-md);
     font-weight: 700;
 
-    &:hover {
+    // Hover only on the other links: the current page keeps its white highlight.
+    &:hover:not(&--active) {
       background: rgb(255 255 255 / 0.1);
     }
 
     &--active {
       background: var(--color-surface);
       color: var(--color-maroon);
+      cursor: default;
     }
   }
 
@@ -111,5 +116,6 @@
 }
 
 .content {
-  padding: var(--space-8) clamp(var(--space-4), 4vw, var(--space-12));
+  min-width: 0;
+  padding: clamp(var(--space-4), 4vw, var(--space-8)) clamp(var(--space-4), 4vw, var(--space-12));
 }

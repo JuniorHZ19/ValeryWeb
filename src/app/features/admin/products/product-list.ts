@@ -1,5 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import type { Product } from '@core/models/product.model';
 import { ProductService } from '@core/services/product.service';
@@ -30,12 +30,25 @@ import { describeApiError } from '../data/api-error';
         <p>Aún no hay productos. Crea el primero con «Nuevo producto».</p>
       </div>
     } @else {
+      @if (categoryOptions().length > 1) {
+        <label class="field filter">
+          <span>Filtrar por categoría</span>
+          <select [value]="categoryFilter()" (change)="categoryFilter.set($any($event.target).value)">
+            <option value="">Todas ({{ products().length }})</option>
+            @for (c of categoryOptions(); track c.slug) {
+              <option [value]="c.slug">{{ c.name }} ({{ c.count }})</option>
+            }
+          </select>
+        </label>
+      }
+
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
               <th scope="col">Imagen</th>
               <th scope="col">Nombre</th>
+              <th scope="col">Categoría</th>
               <th scope="col">Precio</th>
               <th scope="col">Estado</th>
               <th scope="col">Orden</th>
@@ -43,22 +56,23 @@ import { describeApiError } from '../data/api-error';
             </tr>
           </thead>
           <tbody>
-            @for (p of products(); track p.id) {
+            @for (p of visibleProducts(); track p.id) {
               <tr>
-                <td><img class="thumb" [src]="p.imageUrl | media" alt="" /></td>
-                <td>
+                <td data-label=""><img class="thumb" [src]="p.imageUrl | media" alt="" /></td>
+                <td data-label="Nombre">
                   <strong>{{ p.name }}</strong>
                   <br />
                   <small>/productos/{{ p.slug }}</small>
                 </td>
-                <td>{{ p.price !== null ? (p.price | currency: 'PEN' : 'S/ ' : '1.2-2') : 'A consultar' }}</td>
-                <td>
+                <td data-label="Categoría">{{ p.category.name }}</td>
+                <td data-label="Precio">{{ p.price !== null ? (p.price | currency: 'PEN' : 'S/ ' : '1.2-2') : 'A consultar' }}</td>
+                <td data-label="Estado">
                   <span class="badge" [class.badge--on]="p.isVisible" [class.badge--off]="!p.isVisible">
                     {{ p.isVisible ? 'Visible' : 'Oculto' }}
                   </span>
                 </td>
-                <td>{{ p.sortOrder }}</td>
-                <td>
+                <td data-label="Orden">{{ p.sortOrder }}</td>
+                <td data-label="">
                   <div class="actions">
                     <a class="btn btn--ghost btn--small" [routerLink]="['/admin/productos', p.id]">Editar</a>
                     <button type="button" class="btn btn--danger btn--small" [disabled]="deletingId() === p.id" (click)="remove(p)">
@@ -73,12 +87,29 @@ import { describeApiError } from '../data/api-error';
       </div>
     }
   `,
+  styles: `.filter { max-width: 320px; margin-bottom: var(--space-4); }`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ProductList {
   private readonly service = inject(ProductService);
 
   protected readonly products = signal<Product[]>([]);
+  /** Category slug, or '' for all. */
+  protected readonly categoryFilter = signal('');
+  protected readonly visibleProducts = computed(() => {
+    const slug = this.categoryFilter();
+    return slug ? this.products().filter((p) => p.category.slug === slug) : this.products();
+  });
+  /** Categories that have products, with how many, for the filter. */
+  protected readonly categoryOptions = computed(() => {
+    const options = new Map<string, { slug: string; name: string; count: number }>();
+    for (const { category } of this.products()) {
+      const option = options.get(category.slug) ?? { slug: category.slug, name: category.name, count: 0 };
+      option.count++;
+      options.set(category.slug, option);
+    }
+    return [...options.values()];
+  });
   protected readonly loading = signal(true);
   protected readonly error = signal('');
   protected readonly deletingId = signal<number | null>(null);

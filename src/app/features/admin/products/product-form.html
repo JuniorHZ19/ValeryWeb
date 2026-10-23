@@ -20,7 +20,7 @@
   <p role="status">Cargando producto...</p>
 } @else {
   <form class="form panel" [formGroup]="form" (ngSubmit)="save()" novalidate>
-    <app-image-field label="Foto del amigurumi *" [value]="form.controls.imageUrl.value" (valueChange)="form.controls.imageUrl.setValue($event)" />
+    <app-image-field label="Foto del producto *" [value]="form.controls.imageUrl.value" (valueChange)="form.controls.imageUrl.setValue($event)" />
     @if (showError('imageUrl')) {
       <small class="field"><span class="error">Sube una imagen.</span></small>
     }
@@ -38,6 +38,21 @@
       </label>
 
       <label class="field">
+        <span>Categoría *</span>
+        <select formControlName="categoryId">
+          @for (c of categories(); track c.id) {
+            <option [ngValue]="c.id">{{ c.name }}</option>
+          }
+        </select>
+        @if (showError('categoryId')) {
+          <small class="error">Elige una categoría.</small>
+        }
+        @if (!categories().length) {
+          <small>Primero crea una categoría en «Categorías».</small>
+        }
+      </label>
+
+      <label class="field">
         <span>Precio (S/)</span>
         <input type="number" formControlName="price" min="0" step="0.01" placeholder="Vacío = precio a consultar" />
         @if (showError('price')) {
@@ -48,7 +63,7 @@
 
     <label class="field">
       <span>Descripción</span>
-      <textarea formControlName="description" maxlength="2000" placeholder="Cuenta qué hace especial a este amigurumi."></textarea>
+      <textarea formControlName="description" maxlength="2000" placeholder="Cuenta qué hace especial a este producto."></textarea>
     </label>
 
     <fieldset class="field details">

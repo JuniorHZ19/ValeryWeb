@@ -9,10 +9,10 @@ import { map, type Observable } from 'rxjs';
 export class ProductService {
   private readonly http = inject(HttpClient);
 
-  /** `includeHidden` only has effect for an authenticated admin. */
-  list(includeHidden = false): Observable<Product[]> {
+  /** `includeHidden` only has effect for an authenticated admin. `category` is a category slug. */
+  list(includeHidden = false, category?: string): Observable<Product[]> {
     return this.http.get<Product[]>(API_ENDPOINTS.products.list, {
-      params: includeHidden ? { includeHidden: true } : {},
+      params: { ...(includeHidden ? { includeHidden: true } : {}), ...(category ? { category } : {}) },
     });
   }
 

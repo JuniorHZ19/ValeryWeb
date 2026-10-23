@@ -7,7 +7,7 @@ import { Icon } from '@shared/ui/icon/icon';
 interface AdminLink {
   label: string;
   path: string;
-  icon: 'gift' | 'pin';
+  icon: 'gift' | 'tag' | 'pin';
 }
 
 /** Admin shell: sidebar menu (collapses to a top bar on mobile) around the admin pages. */
@@ -27,6 +27,7 @@ export class AdminLayout {
   protected readonly menuOpen = signal(false);
   protected readonly links: AdminLink[] = [
     { label: 'Productos', path: '/admin/productos', icon: 'gift' },
+    { label: 'Categorías', path: '/admin/categorias', icon: 'tag' },
     { label: 'Información del sitio', path: '/admin/sitio', icon: 'pin' },
   ];
 

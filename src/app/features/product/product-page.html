@@ -3,10 +3,12 @@
   <nav class="crumbs" aria-label="Ruta de navegación">
     <a routerLink="/">Inicio</a>
     <span aria-hidden="true">/</span>
-    <a routerLink="/" fragment="modelos">Modelos</a>
     @if (s.status === 'ready') {
+      <a [routerLink]="['/categorias', s.product.category.slug]">{{ s.product.category.name }}</a>
       <span aria-hidden="true">/</span>
       <span aria-current="page">{{ s.product.name }}</span>
+    } @else {
+      <a routerLink="/" fragment="modelos">Modelos</a>
     }
   </nav>
 
@@ -36,11 +38,12 @@
     @let p = s.product;
     <article class="product">
       <figure class="product__figure">
-        <img class="product__img" [src]="p.imageUrl | media" [alt]="p.imageAlt" />
+        <app-zoom-image [src]="p.imageUrl | media" [alt]="p.imageAlt" />
+        <figcaption class="product__hint" aria-hidden="true">🔍 Pasa el mouse para ver detalles</figcaption>
       </figure>
 
       <div class="product__info">
-        <p class="product__eyebrow">Amigurumi personalizado</p>
+        <a class="product__eyebrow" [routerLink]="['/categorias', p.category.slug]">{{ p.category.name }}</a>
         <h1 class="product__title">{{ p.name }}</h1>
 
         <p class="product__price">
@@ -72,7 +75,7 @@
         <app-whatsapp-button class="product__cta" variant="whatsapp" [message]="whatsappMessage()">
           Quiero este modelo
         </app-whatsapp-button>
-        <p class="product__note">Cada amigurumi se teje a mano según tus fotos y detalles.</p>
+        <p class="product__note">Cada pieza se hace a mano: escríbenos y coordinamos los detalles.</p>
       </div>
     </article>
   }

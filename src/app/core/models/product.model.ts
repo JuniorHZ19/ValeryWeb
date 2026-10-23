@@ -1,3 +1,5 @@
+import type { CategoryRef } from './category.model';
+
 /** Mirrors ProductDto in the API. */
 export interface Product {
   id: number;
@@ -12,8 +14,10 @@ export interface Product {
   sizeInfo: string | null;
   isVisible: boolean;
   sortOrder: number;
+  categoryId: number;
+  category: CategoryRef;
   updatedAt: string;
 }
 
 /** Body for create/update (ProductUpsertDto). */
-export type ProductInput = Omit<Product, 'id' | 'slug' | 'updatedAt'>;
+export type ProductInput = Omit<Product, 'id' | 'slug' | 'category' | 'updatedAt'>;

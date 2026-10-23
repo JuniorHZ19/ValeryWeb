@@ -18,12 +18,49 @@
     <ul class="nav__list">
       @for (link of links; track link.fragment) {
         <li>
-          <a class="nav__link" routerLink="/" [fragment]="link.fragment" (click)="menuOpen.set(false)">{{ link.label }}</a>
+          <a class="nav__link" routerLink="/" [fragment]="link.fragment" (click)="closeMenus()">{{ link.label }}</a>
         </li>
+        <!-- The categories menu goes right after "Modelos". -->
+        @if (link.fragment === 'modelos') {
+          <li class="dropdown" [class.dropdown--open]="categoriesOpen()">
+            <button
+              type="button"
+              class="nav__link dropdown__toggle"
+              aria-controls="categories-menu"
+              [attr.aria-expanded]="categoriesOpen()"
+              (click)="categoriesOpen.set(!categoriesOpen())"
+            >
+              Categorías <app-icon class="dropdown__chevron" name="chevronDown" [size]="16" />
+            </button>
+            @if (categoriesOpen()) {
+              <ul id="categories-menu" class="dropdown__menu">
+                @for (category of categories(); track category.id) {
+                  <li>
+                    <a
+                      class="dropdown__link"
+                      [routerLink]="['/categorias', category.slug]"
+                      routerLinkActive="dropdown__link--active"
+                      (click)="closeMenus()"
+                    >
+                      {{ category.name }}
+                      <span class="dropdown__count">{{ category.productCount }}</span>
+                    </a>
+                  </li>
+                }
+                <li>
+                  <a class="dropdown__link" routerLink="/" fragment="modelos" (click)="closeMenus()">
+                    Todos
+                    <span class="dropdown__count">{{ totalProducts() }}</span>
+                  </a>
+                </li>
+              </ul>
+            }
+          </li>
+        }
       }
       @if (isAdmin()) {
         <li>
-          <a class="nav__link nav__link--admin" routerLink="/admin" (click)="menuOpen.set(false)">Panel admin</a>
+          <a class="nav__link nav__link--admin" routerLink="/admin" (click)="closeMenus()">Panel admin</a>
         </li>
       }
     </ul>

@@ -121,6 +121,7 @@
     gap: var(--space-6);
   }
 
+  // The photo spans the whole column and the frame takes its proportions: no crop, no stretch, no empty bands.
   &__figure {
     position: sticky;
     top: calc(var(--header-height) + var(--space-4));
@@ -131,20 +132,44 @@
     box-shadow: var(--shadow-soft);
 
     @include bp.below(bp.$tablet) {
-      position: static;
+      position: relative;
+      top: auto;
     }
   }
 
-  &__img {
-    width: 100%;
-    max-height: 640px;
-    object-fit: contain;
+  &__hint {
+    position: absolute;
+    right: var(--space-3);
+    bottom: var(--space-3);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 0.85);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-maroon);
+    pointer-events: none;
+    transition: opacity 150ms ease;
+
+    // Only meaningful with a mouse; hidden while the lens is in use.
+    @media (hover: none) {
+      display: none;
+    }
   }
 
+  &__figure:hover &__hint {
+    opacity: 0;
+  }
+
+  // Category name, linking to its page.
   &__eyebrow {
+    display: inline-block;
     font-family: var(--font-script);
     font-size: var(--text-xl);
     color: var(--color-brick);
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &__title {

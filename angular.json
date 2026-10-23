@@ -90,6 +90,10 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "port": 4318,
+            "poll": 1000
+          },
           "configurations": {
             "production": {
               "buildTarget": "valex:build:production"

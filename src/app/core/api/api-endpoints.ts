@@ -15,5 +15,9 @@ export const API_ENDPOINTS = {
     bySlug: (slug: string) => `${API_BASE_URL}/api/products/${encodeURIComponent(slug)}`,
     byId: (id: number) => `${API_BASE_URL}/api/products/id/${id}`,
   },
+  categories: {
+    list: `${API_BASE_URL}/api/categories`,
+    byId: (id: number) => `${API_BASE_URL}/api/categories/${id}`,
+  },
   uploads: `${API_BASE_URL}/api/uploads`,
 } as const;

@@ -17,6 +17,8 @@ export type IconName =
   | 'briefcase'
   | 'tree'
   | 'pin'
+  | 'tag'
+  | 'chevronDown'
   | 'whatsapp'
   | 'facebook'
   | 'instagram';
