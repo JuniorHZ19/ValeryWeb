@@ -29,7 +29,7 @@
     margin: 0;
     overflow: hidden;
     background: linear-gradient(180deg, var(--color-cream), var(--color-sand));
-     @media (max: 495px) {
+     @media (max-width: 495px) {
     height: auto;
   }
   }
