@@ -1,3 +1,4 @@
+@use "breakpoints" as bp;
 :host {
   display: block;
   height: 100%;
@@ -28,6 +29,9 @@
     margin: 0;
     overflow: hidden;
     background: linear-gradient(180deg, var(--color-cream), var(--color-sand));
+     @media (max: 495px) {
+    height: auto;
+  }
   }
 
   &__img {
@@ -35,7 +39,11 @@
     height: 100%;
     object-fit: cover;
     object-position: top center;
-  }
+      @media (max-width: 495px) {
+       height: auto;
+       object-fit: contain;
+  } }
+  
 
   &__body {
     display: flex;
@@ -93,4 +101,5 @@
     color: var(--color-maroon);
     transition: gap 150ms ease;
   }
+
 }
